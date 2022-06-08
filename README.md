@@ -57,8 +57,8 @@ image_post_info = result.json()
 Assuming you made the call above, the response data can be found in the `image_post_info`. Using that, the following will upload your image.
 ```python
 with open('/path/to/your/image.jpg', 'rb') as file_obj:
-    http_repsonse = requests.post(image_post_info['url'], data=json.loads(image_post_info['post_data']), files={'file': file_obj})
-    http_repsonse.raise_for_status()
+    http_response = requests.post(image_post_info['url'], data=json.loads(image_post_info['post_data']), files={'file': file_obj})
+    http_response.raise_for_status()
 ```
 
 ## Publish the content
