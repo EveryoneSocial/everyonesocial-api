@@ -4,7 +4,6 @@ info:
   description: "ES Open API Template"
   version: "1.0.0"
 servers:
-  - url: https://api.everyonestage.app/v1
   - url: https://api.everyonesocial.app/v1
 paths:
   /disclosure:
