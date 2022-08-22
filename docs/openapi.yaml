@@ -135,7 +135,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/APIError"
         "404":
-          description: "Unknown Error"
+          description: "Not Found"
           content:
             application/json:
               schema:
@@ -180,7 +180,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/APIError"
         "404":
-          description: "Unknown Error"
+          description: "Not Found"
           content:
             application/json:
               schema:
@@ -282,6 +282,12 @@ paths:
       responses:
         "405":
           description: "405 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        "404":
+          description: "Not Found"
           content:
             application/json:
               schema:
@@ -535,6 +541,33 @@ paths:
                 $ref: "#/components/schemas/APIError"
       security:
         - everyonesocial_pool: [ ]
+  /share/stat:
+    get:
+      tags:
+        - "Endpoints - ShareStat"
+      operationId: "getShareStat"
+      responses:
+        "200":
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShareStatList"
+        "400":
+          description: "Bad Payload"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        "500":
+          description: "Unknown Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - everyonesocial_pool: [ ]
+
 components:
   schemas:
     Group:
@@ -789,6 +822,36 @@ components:
             $ref: "#/components/schemas/Disclosure"
         _metadata:
           $ref: "#/components/schemas/Metadata"
+    ShareStatShare:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: "string"
+    ShareStat:
+      type: object
+      additionalProperties: false
+      properties:
+        share:
+          $ref: "#/components/schemas/ShareStatShare"
+        date:
+          type: "string"
+        twitter_likes:
+          type: "integer"
+        twitter_retweets:
+          type: "integer"
+        linkedin_likes:
+          type: "integer"
+        linkedin_comments:
+          type: "integer"
+    ShareStatList:
+      type: object
+      additionalProperties: false
+      properties:
+        "@items":
+          type: array
+          items:
+            $ref: "#/components/schemas/ShareStat"
   securitySchemes:
     everyonesocial_pool:
       type: "apiKey"
