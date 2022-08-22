@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="swagger-ui.css" rel="stylesheet" type="text/css">
+    <title>OpenAPI EveryoneSocial</title>
+<body>
+<div id="openapi">
+    <script src="swagger-ui-bundle.js"></script>
+    <script>
+        window.onload = function () {
+            const ui = SwaggerUIBundle({
+                url: "openapi.yaml",
+                dom_id: "#openapi"
+            })
+        }
+    </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,796 @@
+openapi: "3.0.1"
+info:
+  title: "EveryoneSocial"
+  description: "ES Open API Template"
+  version: "1.0.0"
+servers:
+  - url: https://api.everyonesocial.app/v1
+paths:
+  /disclosure:
+    get:
+      tags:
+        - "Endpoints - Disclosure"
+      operationId: "getDisclosureList"
+      responses:
+        "200":
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DisclosureList"
+        "500":
+          description: "Unknown Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - everyonesocial_pool: [ ]
+  /disclosure/{disclosure_id}:
+    get:
+      tags:
+        - "Endpoints - Disclosure"
+      operationId: "getDisclosure"
+      parameters:
+        - name: "disclosure_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Content"
+        "500":
+          description: "Unknown Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - everyonesocial_pool: [ ]
+  /content/{content_id}:
+    get:
+      tags:
+        - "Endpoints - Content"
+      operationId: "getContent"
+      parameters:
+        - name: "content_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "500":
+          description: "Unknown Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        "200":
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Content"
+      security:
+        - everyonesocial_pool: [ ]
+  /group:
+    get:
+      tags:
+        - "Endpoints - Group"
+      operationId: "getGroups"
+      parameters:
+        - name: "group_name"
+          in: "query"
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  group_list:
+                    type: "array"
+                    items:
+                      $ref: "#/components/schemas/Group"
+                  _metadata:
+                    $ref: "#/components/schemas/Metadata"
+        "500":
+          description: "Unknown Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - everyonesocial_pool: [ ]
+  /group/{group_id}:
+    get:
+      tags:
+        - "Endpoints - Group"
+      operationId: "getGroup"
+      parameters:
+        - name: "group_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Group"
+        "500":
+          description: "Unknown Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        "404":
+          description: "Unknown Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - everyonesocial_pool: [ ]
+  /group/{group_id}/content:
+    post:
+      tags:
+        - "Endpoints - Content"
+        - "Publish Content Process"
+      operationId: "postGroupContent"
+      parameters:
+        - name: "group_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContentData"
+        required: true
+      responses:
+        "200":
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Content"
+        "400":
+          description: "Bad Payload"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        "500":
+          description: "Unknown Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        "404":
+          description: "Unknown Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - everyonesocial_pool: [ ]
+    get:
+      tags:
+        - "Endpoints - Content"
+      operationId: "getGroupContentList"
+      parameters:
+        - name: "group_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "next_id"
+          in: "query"
+          schema:
+            type: "string"
+        - name: "approval_status"
+          in: "query"
+          schema:
+            type: "string"
+            enum:
+              - approved
+              - submitted
+              - scheduled
+              - removed
+        - name: "content_type"
+          in: "query"
+          schema:
+            type: "string"
+            enum:
+              - text
+              - link
+              - video
+              - image
+        - name: "sort_by"
+          in: "query"
+          schema:
+            type: "string"
+            enum:
+              - created_at
+              - publish_at
+              - title
+              - content_type
+              - group_title
+        - name: "sort_dir"
+          in: "query"
+          schema:
+            type: "string"
+            enum:
+              - asc
+              - desc
+      responses:
+        "200":
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContentList"
+        "400":
+          description: "Bad Payload"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        "500":
+          description: "Unknown Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        "404":
+          description: "Unknown Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - everyonesocial_pool: [ ]
+  /group/{group_id}/content/{content_id}:
+    get:
+      tags:
+        - "Endpoints - Content"
+      operationId: "getGroupContent"
+      parameters:
+        - name: "content_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "group_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "405":
+          description: "405 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        "200":
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Content"
+      security:
+        - everyonesocial_pool: [ ]
+    delete:
+      tags:
+        - "Endpoints - Content"
+      operationId: "deleteGroupContent"
+      parameters:
+        - name: "content_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "group_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "404":
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        "204":
+          description: "204 response"
+      security:
+        - everyonesocial_pool: [ ]
+    patch:
+      tags:
+        - "Endpoints - Content"
+      operationId: "patchGroupContent"
+      parameters:
+        - name: "content_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "group_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContentData"
+        required: true
+      responses:
+        "200":
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Content"
+        "400":
+          description: "Bad Payload"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        "500":
+          description: "Unknown Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - everyonesocial_pool: [ ]
+  /group/{group_id}/content/{content_id}/image:
+    post:
+      tags:
+        - "Endpoints - Content"
+        - "Publish Content Process"
+      operationId: "postGroupContentImage"
+      parameters:
+        - name: "content_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "group_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostURLResponse"
+        "400":
+          description: "Bad Payload"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        "500":
+          description: "Unknown Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - everyonesocial_pool: [ ]
+  /group/{group_id}/content/{content_id}/video:
+    post:
+      tags:
+        - "Endpoints - Content"
+        - "Publish Content Process"
+      operationId: "postGroupContentVideo"
+      parameters:
+        - name: "content_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "group_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostURLResponse"
+        "400":
+          description: "Bad Payload"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        "500":
+          description: "Unknown Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - everyonesocial_pool: [ ]
+  /group/{group_id}/content/{content_id}/repost:
+    post:
+      tags:
+        - "Endpoints - Content"
+      operationId: "repostGroupContent"
+      parameters:
+        - name: "content_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "group_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                group_id:
+                  type: string
+              additionalProperties: false
+        required: true
+      responses:
+        "200":
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Content"
+        "400":
+          description: "Bad Payload"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        "404":
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        "500":
+          description: "Unknown Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - everyonesocial_pool: [ ]
+  /group/{group_id}/content/{content_id}/publish:
+    post:
+      tags:
+        - "Endpoints - Content"
+        - "Publish Content Process"
+      operationId: "publishGroupContent"
+      parameters:
+        - name: "content_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "group_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContentPublishInfo"
+        required: true
+      responses:
+        "200":
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Content"
+        "400":
+          description: "Bad Payload"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+        "500":
+          description: "Unknown Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/APIError"
+      security:
+        - everyonesocial_pool: [ ]
+components:
+  schemas:
+    Group:
+      type: "object"
+      additionalProperties: false
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+          readOnly: true
+        name:
+          type: "string"
+        is_private:
+          type: "boolean"
+        description:
+          type: "string"
+        created_at:
+          type: "string"
+          format: "date-time"
+        updated_at:
+          type: "string"
+          format: "date-time"
+        read_only:
+          type: "boolean"
+        _metadata:
+          $ref: "#/components/schemas/Metadata"
+    ContentData:
+      type: "object"
+      additionalProperties: false
+      properties:
+        title:
+          type: "string"
+        body:
+          type: "string"
+        url:
+          type: "string"
+        disclosure_list:
+          type: "array"
+          items:
+            type: object
+            additionalProperties: False
+            properties:
+              disclosure_id:
+                type: "string"
+              network:
+                type: "string"
+          writeOnly: true
+        disclosures:
+          type: "array"
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/Disclosure"
+        is_engageable:
+          type: "boolean"
+        is_shareable:
+          type: "boolean"
+        is_important:
+          type: "boolean"
+        important_message:
+          type: "string"
+        share_commentary:
+          type: array
+          items:
+            type: object
+            additionalProperties: False
+            properties:
+              network:
+                type: "string"
+              commentary:
+                type: "string"
+        lock_share_commentary:
+          type: boolean
+    Content:
+      required:
+        - "id"
+        - "group_id"
+      type: "object"
+      additionalProperties: false
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+          readOnly: true
+        content_data:
+          $ref: "#/components/schemas/ContentData"
+        group_id:
+          type: "string"
+          format: "uuid"
+          readOnly: true
+        repost_group_ids:
+          type: array
+          items:
+            type: "string"
+            format: "uuid"
+          readOnly: true
+        reactions:
+          type: "string"
+          readOnly: true
+        comments:
+          type: "string"
+          readOnly: true
+        shared_by:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/UserInfo"
+        status:
+          type: "string"
+          readOnly: true
+        created_by:
+          $ref: "#/components/schemas/UserInfo"
+        created_at:
+          type: "string"
+          format: "date-time"
+        important_message:
+          type: "string"
+        media:
+          type: array
+          items:
+            $ref: "#/components/schemas/MediaContent"
+        publish_info:
+          $ref: "#/components/schemas/ContentPublishInfo"
+        _metadata:
+          $ref: "#/components/schemas/Metadata"
+    ContentPublishInfo:
+      type: "object"
+      additionalProperties: false
+      properties:
+        is_pinned:
+          type: "boolean"
+        pinned_end_at:
+          type: "string"
+          format: "date-time"
+        publish_at:
+          type: "string"
+          format: "date-time"
+          description: "Defaults to immediately."
+        expire_at:
+          type: "string"
+          format: "date-time"
+        html_url:
+          type: "string"
+          readOnly: true
+        embedded_content_code:
+          type: "string"
+          readOnly: true
+        embedded_content_url:
+          type: "string"
+          readOnly: true
+    Metadata:
+      required:
+        - "object_type"
+      type: "object"
+      additionalProperties: false
+      properties:
+        next:
+          type: "string"
+          readOnly: true
+        self:
+          type: "string"
+          readOnly: true
+        object_type:
+          type: "string"
+          readOnly: true
+        total_count:
+          type: "integer"
+          readOnly: true
+    MediaContent:
+      type: "object"
+      additionalProperties: false
+      properties:
+        url:
+          type: "string"
+          readOnly: true
+        media_type:
+          type: "string"
+          readOnly: true
+        width:
+          type: integer
+          readOnly: true
+        height:
+          type: integer
+          readOnly: true
+    UserInfo:
+      type: "object"
+      additionalProperties: false
+      properties:
+        id:
+          type: "string"
+        full_name:
+          type: "string"
+        email_address:
+          type: "string"
+        _metadata:
+          $ref: "#/components/schemas/Metadata"
+    PostURLResponse:
+      type: "object"
+      additionalProperties: false
+      properties:
+        method:
+          type: "string"
+        post_data:
+          type: "string"
+        url:
+          type: "string"
+        _metadata:
+          $ref: "#/components/schemas/Metadata"
+    APIError:
+      type: "object"
+      additionalProperties: false
+      properties:
+        reason:
+          type: "string"
+        message:
+          type: "string"
+        additional_info:
+          type: array
+          items:
+            type: "string"
+        _metadata:
+          $ref: "#/components/schemas/Metadata"
+    ContentList:
+      type: object
+      additionalProperties: false
+      properties:
+        content_list:
+          type: array
+          items:
+            $ref: "#/components/schemas/Content"
+        _metadata:
+          $ref: "#/components/schemas/Metadata"
+    Disclosure:
+      type: object
+      additionalProperties: false
+      properties:
+        disclosure_id:
+          type: "string"
+        title:
+          type: "string"
+        disclosure:
+          type: "string"
+        network:
+          type: "string"
+        _metadata:
+          $ref: "#/components/schemas/Metadata"
+    DisclosureList:
+      type: object
+      additionalProperties: false
+      properties:
+        content_list:
+          type: array
+          items:
+            $ref: "#/components/schemas/Disclosure"
+        _metadata:
+          $ref: "#/components/schemas/Metadata"
+  securitySchemes:
+    everyonesocial_pool:
+      type: "apiKey"
+      name: "Authorization"
+      in: "header"
