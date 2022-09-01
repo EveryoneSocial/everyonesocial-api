@@ -546,6 +546,71 @@ paths:
       tags:
         - "Endpoints - ShareStat"
       operationId: "getShareStat"
+      parameters:
+        - name: "start"
+          in: "query"
+          schema:
+            type: "string"
+          description: "The earliest date to return share stats for."
+        - name: "end"
+          in: "query"
+          schema:
+            type: "string"
+          description: "The latest date to return share stats for."
+        - name: "share_id"
+          in: "query"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          description: "The share to return stats for. Specify multiple times to return stats for multiple shares."
+        - name: "post_id"
+          in: "query"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          description: "The post to return stats for. Specify multiple times to return stats for multiple posts."
+        - name: "user_id"
+          in: "query"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          description: "The user to return stats for. Specify multiple times to return stats for multiple users."
+        - name: "group_id"
+          in: "query"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          description: "The group to return stats for. Specify multiple times to return stats for multiple groups."
+        - name: "department_id"
+          in: "query"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          description: "The department to return stats for. Specify multiple times to return stats for multiple departments."
+        - name: "location_id"
+          in: "query"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          description: "The location to return stats for. Specify multiple times to return stats for multiple locations."
+        - name: "segment_id"
+          in: "query"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+          description: "The segment to return stats for. Specify multiple times to return stats for multiple segments."
+        - name: "branded"
+          in: "query"
+          schema:
+            type: "boolean"
+          description: "Show only branded (true) or unbranded (false) posts."
       responses:
         "200":
           description: "200 response"
